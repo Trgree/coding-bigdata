@@ -1,4 +1,4 @@
-package org.ace;
+package org.ace.test;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Liangsj on 2018/2/27.
  */
-public class HelloWorld {
+public class Wordcount_RDD {
     public static void main(String[] args) {
         SparkConf conf = new SparkConf().setAppName("helloworld").setMaster("local");
         JavaSparkContext sc = new JavaSparkContext(conf);

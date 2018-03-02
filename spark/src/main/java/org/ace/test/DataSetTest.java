@@ -1,4 +1,4 @@
-package org.ace;
+package org.ace.test;
 
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.function.MapFunction;
@@ -12,7 +12,7 @@ public class DataSetTest {
         SparkSession spark = SparkSession
                 .builder()
                 .appName("Java Spark SQL basic example")
-                .config("spark.master", "local")
+                .master("local")
                 .getOrCreate();
         JavaRDD<Person> peopleRDD = spark.read()
                 .textFile("hdfs://192.168.5.150:8020/tmp/sparktest/people.txt")
