@@ -13,7 +13,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <hadoop.version>2.6.0-cdh5.11.0</hadoop.version>
+        <hadoop.version>2.6.0</hadoop.version>
         <spark.version>2.1.0</spark.version>
         <spark.scala.version>2.11</spark.scala.version>
     </properties>
@@ -21,8 +21,8 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_2.11</artifactId>
-            <version>2.1.0</version>
+            <artifactId>spark-core_${spark.scala.version}</artifactId>
+            <version>${spark.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
@@ -30,9 +30,21 @@
             <version>${spark.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-mllib_${spark.scala.version}</artifactId>
+            <version>${spark.version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>
             <version>${hadoop.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.hadoop</groupId>
+            <artifactId>hadoop-lzo</artifactId>
+            <version>0.4.20</version>
+        </dependency>
+
     </dependencies>
 </project>
