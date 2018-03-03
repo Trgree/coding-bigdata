@@ -49,6 +49,8 @@ public class CreateGroup implements Watcher {
         createGroup.connect("120.237.91.36");
         System.out.println();
         createGroup.create("test");
+        createGroup.create("test/c1");
+        createGroup.create("test/c1/cc1");
         createGroup.close();
     }
 }

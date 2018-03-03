@@ -8,9 +8,10 @@ import org.I0Itec.zkclient.ZkClient;
  */
 public class ZkClientTest {
     public static void main(String[] args) {
-        ZkClient zkClient = new ZkClient("192.168.5.151");
-        zkClient.delete("test");
-        zkClient.createPersistent("test");
+      //  ZkClient zkClient = new ZkClient("192.168.5.151");
+        ZkClient zkClient = new ZkClient("120.237.91.36");
+        zkClient.delete("/test");
+    //  zkClient.createPersistent("test");
         zkClient.close();
-    }
+}
 }
