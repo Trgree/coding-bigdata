@@ -31,7 +31,7 @@ public class ListGroup extends ConnectWatcher {
     public static void main(String[] args) throws Exception {
         ListGroup listGroup = new ListGroup();
         listGroup.connect("120.237.91.36");
-        listGroup.list("test");
+        listGroup.list("locks");
         listGroup.close();
     }
 }

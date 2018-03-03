@@ -32,7 +32,7 @@ public class DeleteGroup extends ConnectWatcher {
     public static void main(String[] args) throws Exception {
         DeleteGroup deleteGroup = new DeleteGroup();
         deleteGroup.connect("120.237.91.36");
-        deleteGroup.delete("test");
+        deleteGroup.delete("locks");
         deleteGroup.close();
     }
 }
