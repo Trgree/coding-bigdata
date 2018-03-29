@@ -2,6 +2,7 @@ package org.ace.test.spark.pojo;
 
 import com.alibaba.fastjson.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +10,9 @@ import java.util.List;
  * 一个任务，包括多个结点（子任务）
  * Created by Liangsj on 2018/3/28.
  */
-public class Task {
+public class Task implements Serializable {
     private int id;
+    private String name;
     private List<Node> nodes;
 
     public void addNode(Node node) {
@@ -26,6 +28,15 @@ public class Task {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Node> getNodes() {
@@ -47,9 +58,9 @@ public class Task {
     public static void main(String[] args) {
         Task task = new Task();
         task.setId(1);
-        task.addNode(new Node("org.ace.test.org.ace.spark.LoadHandler","{\"path\":\"spark/file/dpi.txt\",\"sep\":\",\"}"));
-        task.addNode(new Node("org.ace.test.org.ace.spark.FilterHandler","{}"));
-        task.addNode(new Node("org.ace.test.org.ace.spark.LoadHandler","{\"path\":\"spark/file/out\",\"sep\":\",\"}"));
+        task.addNode(new Node(1,"输入","org.ace.test.spark.handler.impl.LoadHandler","{\"path\":\"spark/file/dpi.txt\",\"sep\":\",\"}", -1));
+        task.addNode(new Node(2,"过滤","org.ace.test.spark.handler.impl.FilterHandler","{filter:\"ha\"}",2));
+        task.addNode(new Node(3,"输出","org.ace.test.spark.handler.impl.SaveHandler","{\"path\":\"spark/file/out\",\"sep\":\",\"}",3));
         String json = JSONObject.toJSONString(task);
         System.out.println(json);
         Task receivedTask = JSONObject.toJavaObject(JSONObject.parseObject(json), Task.class);

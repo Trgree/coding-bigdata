@@ -5,10 +5,13 @@ import org.ace.test.spark.pojo.Node;
 import org.ace.test.spark.pojo.Task;
 import org.apache.spark.sql.SparkSession;
 
+import java.io.Serializable;
+
 /**
+ * 上下文，程序入口
  * Created by Liangsj on 2018/3/28.
  */
-public class Context {
+public class Context implements Serializable {
 
     private Task task;
 

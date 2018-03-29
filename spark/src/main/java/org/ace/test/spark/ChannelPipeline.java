@@ -3,15 +3,18 @@ package org.ace.test.spark;
 import org.ace.test.spark.handler.Handler;
 import org.ace.test.spark.pojo.Node;
 import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Queue;
 
 /**
+ * Handler通道，存放所有Handler，并顺序执行所有Handler
  * Created by Liangsj on 2018/3/16.
  */
-public class ChannelPipeline {
+public class ChannelPipeline implements Serializable {
 
     private Queue<Handler> handlerSet = new LinkedList<Handler>();
 
@@ -20,12 +23,12 @@ public class ChannelPipeline {
     }
 
     public void addLast(Node node){
-        String jsonString = node.getParamJson();
         String clazz = node.getClazz();
         try {
             Object handler = Class.forName(clazz).newInstance();
             if(handler instanceof Handler){
-                ((Handler) handler).setParam(jsonString);
+                // 初始化
+                ((Handler) handler).init(node);
                 addLast((Handler)handler);
             } else {
                throw new RuntimeException(clazz + "不是一个Handler实例") ;
@@ -40,11 +43,10 @@ public class ChannelPipeline {
     }
 
     public void handle(SparkSession sparkSession){
-        Dataset current = null;
-        Dataset result = null;
         for(Handler handler : handlerSet) {
-            result = handler.handle(sparkSession,current);
-            current = result;
+            handler.preHandle();
+            Dataset<Row> result = handler.handle(sparkSession);
+            handler.postHandle(result);
         }
     }
 

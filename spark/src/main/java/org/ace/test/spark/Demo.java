@@ -22,14 +22,13 @@ public class Demo {
         // 模拟出json
         Task task = new Task();
         task.setId(1);
-        task.addNode(new Node("org.ace.test.spark.handler.LoadHandler","{\"path\":\"spark/file/dpi.txt\",\"sep\":\",\"}"));
-        task.addNode(new Node("org.ace.test.spark.handler.FilterHandler","{}"));
-        task.addNode(new Node("org.ace.test.spark.handler.SaveHandler","{\"path\":\"spark/file/out\",\"sep\":\",\"}"));
+        task.addNode(new Node(1,"输入","org.ace.test.spark.handler.impl.LoadHandler","{\"path\":\"spark/file/dpi.txt\",\"sep\":\",\"}", -1));
+        task.addNode(new Node(2,"过滤","org.ace.test.spark.handler.impl.FilterHandler","{filter:\"ha\"}",1));
+        task.addNode(new Node(3,"输出","org.ace.test.spark.handler.impl.SaveHandler","{\"path\":\"spark/file/out\",\"sep\":\",\"}",2));
         String json = JSONObject.toJSONString(task);
 
         Context context = new Context(json);
         context.execute();
-
 
         System.out.println("done");
 
