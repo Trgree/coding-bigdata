@@ -10,27 +10,18 @@ import org.apache.spark.sql.SparkSession;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
- * 清洗
- * Created by Liangsj on 2018/3/1.
+ * Created by Liangsj on 2018/3/16.
  */
-public class Cleaner {
+public class Cleaner2 {
     public static void main(String[] args) {
 
         String srcSep = ",";
         String desSep = "|";
         String input = "spark/file/dpi.txt";
         String output = "spark/file/out";
-        /*if(args.length !=4) {
-            System.err.println("wrong args! usage: <srcSep> <desSep> <input> <output> ");
-            return;
-
-        }
-        String srcSep=args[0];
-        String desSep=args[1];
-        String input=args[2];
-        String output=args[3];*/
 
         delLocalDir(output);
 
@@ -39,46 +30,52 @@ public class Cleaner {
                 .appName("Java Spark SQL basic example")
                 .master("local")
                 .getOrCreate();
-        System.out.println("spark1" + spark);
+
+
+
 
         // 读取文件，并分隔
         Dataset<Row> ds = spark.read()
-               .format("csv")
+                .format("csv")
                 .option("inferSchema", "true")
                 .option("sep", srcSep) // 指定分隔符
                 // .option("header", "true")
                 .load(input)// 本地文件
-              //  .text(input)
-        ;
-        ds = ds.withColumnRenamed("_c0","c1").withColumnRenamed("_c1","c2");
-        ds = ds.drop("c2");
-        ds.show();// 数据已分列
-        spark.close();
+                //  .text(input)
+                ;
+        //ds.show();// 数据已分列
+     //   ds.write().csv(output+"_1");
+        System.out.println("读取文件完成");
 
 
-        // 数据清洗
-      /*  ds.filter((FilterFunction<Row>) row -> {
-
+        Dataset<Row> ds2 =  ds.filter((FilterFunction<Row>) row -> {
             String col1 = null;
             Integer col2 = null;
             try {
                 col1 = (String) row.get(0);
                 col2 = (Integer) row.get(1);
+                TimeUnit.MICROSECONDS.sleep(300);
+                System.out.println("=====");
                 return col1.length() > 3 && col2 > 20;
             } catch (Exception e) {
             }
             return false;
-        })
-            // 指定格式输出
-            .map((MapFunction<Row, String>) row -> {
-                return row.mkString(desSep);
-    }, Encoders.STRING())
-            .write()
-            .format("text")
-            .option("header", "false")
-                .option("sep",desSep)
-            .save(output);
-*/
+        });
+        ds2.write().csv(output+"_2");
+        System.out.println("清洗文件完成");
+        ds2.persist();
+
+        Dataset result =  ds2
+                // 指定格式输出
+                .map((MapFunction<Row, String>) row -> {
+                    TimeUnit.SECONDS.sleep(1);
+                    System.out.println("-----");
+                    return row.mkString(desSep);
+                }, Encoders.STRING());
+        System.out.println("文件格式完成");
+
+        result.write().csv(output);
+
         System.out.println("done");
 
     }
