@@ -12,6 +12,9 @@
         <module>spark</module>
         <module>hive</module>
         <module>zookeeper</module>
+        <module>spark-scala</module>
+        <module>spark-scala2</module>
+        <module>hbase</module>
     </modules>
 
 

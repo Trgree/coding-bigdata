@@ -24,32 +24,25 @@ public class SparkStream implements Serializable{
 	}
 	
 	public void start() throws InterruptedException {
-		SparkConf conf = new SparkConf().setMaster("local").setAppName("NetworkWordCount");
+		SparkConf conf = new SparkConf().setMaster("local[2]").setAppName("NetworkWordCount");
 		JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(5));
-		JavaReceiverInputDStream<String> lines = jssc.socketTextStream("192.168.5.151", 9999);
+		//JavaReceiverInputDStream<String> lines = jssc.socketTextStream("120.237.91.36", 9999);
+		JavaDStream<String> lines = jssc.textFileStream("H:\\temp");
 		lines.print();
-		JavaDStream<String> words = lines.flatMap(new FlatMapFunction<String, String>() {
-			@Override
-			public Iterator<String> call(String x) {
-				return Arrays.asList(x.split(" ")).iterator();
-			}
-		});
-		JavaPairDStream<String, Integer> pairs = words.mapToPair(new PairFunction<String, String, Integer>() {
-			@Override
-			public Tuple2<String, Integer> call(String s) {
-				return new Tuple2<String, Integer>(s, 1);
-			}
-		});
-		JavaPairDStream<String, Integer> wordCounts = pairs.reduceByKey(new Function2<Integer, Integer, Integer>() {
-			@Override
-			public Integer call(Integer i1, Integer i2) {
-				return i1 + i2;
-			}
-		});
 
+		JavaDStream<String> words = lines.flatMap(
+				(FlatMapFunction<String, String>) x -> Arrays.asList(x.split(" ")).iterator());
+		// Count each word in each batch
+		JavaPairDStream<String, Integer> pairs = words.mapToPair(
+				(PairFunction<String, String, Integer>) s -> new Tuple2<>(s, 1));
+		JavaPairDStream<String, Integer> wordCounts = pairs.reduceByKey(
+				(Function2<Integer, Integer, Integer>) (i1, i2) -> i1 + i2);
+
+		// Print the first ten elements of each RDD generated in this DStream to the console
 		wordCounts.print();
+		//wordCounts.dstream().saveAsTextFiles("spark/file/out","spark");
+
 		jssc.start(); // Start the computation
 		jssc.awaitTermination();
-
 	}
 }

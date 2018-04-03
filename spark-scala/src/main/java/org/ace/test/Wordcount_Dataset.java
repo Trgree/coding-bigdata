@@ -1,15 +1,13 @@
 package org.ace.test;
 
-import org.apache.spark.api.java.JavaRDD;
+
 import org.apache.spark.api.java.function.FilterFunction;
 import org.apache.spark.api.java.function.FlatMapFunction;
-import org.apache.spark.api.java.function.MapFunction;
 import org.apache.spark.sql.*;
-import scala.Function1;
-import scala.collection.TraversableOnce;
 
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 计算单词个数
@@ -17,13 +15,17 @@ import java.util.Iterator;
  */
 public class Wordcount_Dataset {
     public static void main(String[] args) {
+
+        Logger.getLogger("org.apache.hadoop").setLevel(Level.FINER);
+        Logger.getLogger("org.apache.spark").setLevel(Level.FINER);
+        Logger.getLogger("org.eclipse.jetty.server").setLevel(Level.FINER);
+
         SparkSession spark = SparkSession
                 .builder()
                 .appName("Java Spark SQL basic example")
                 .master("local")
                 .getOrCreate();
         Dataset<String> ds = spark.read()
-      //          .text("hdfs://192.168.5.150:8020/tmp/sparktest/people.txt")
                .text("spark/file/file01.txt")// 本地文件
                 .as(Encoders.STRING());
 
@@ -34,8 +36,6 @@ public class Wordcount_Dataset {
                 }, Encoders.STRING())
                 .filter((FilterFunction<String>)s -> !s.isEmpty())
                 .coalesce(1);//one partition (parallelism level)
-
-      //  words.show();
 
         Dataset<Row> t = words.groupBy("value") //<k, iter(V)>
                 .count()

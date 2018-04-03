@@ -4,7 +4,7 @@
 
     <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">    
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %5p [%t] %l - %m%n"/>
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %5p [%t] %l - %m%n"/>
         </layout>
         <param name="Encoding" value="UTF-8" />  
     </appender>  
@@ -21,7 +21,7 @@
     </appender>
 
     <root>
-        <priority value ="info"/>
+        <priority value ="error"/>
         <appender-ref ref="FILE"/> 
 		<appender-ref ref="STDOUT"/> 
     </root>
