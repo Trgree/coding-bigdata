@@ -13,7 +13,7 @@ import java.util.concurrent.locks.Lock;
 
 /**
  * 分布式锁实现
- * 多个客户端请求乐，只有一个能获取锁，其它的按顺序等待，直到上一个锁释放
+ * 多个客户端请求锁，只有一个能获取锁，其它的按顺序等待，直到上一个锁释放
  *
  *  基于ZooKeeper分布式锁的流程：
  * 1。在zookeeper指定节点（locks）下创建临时顺序节点node_n   n会自增
