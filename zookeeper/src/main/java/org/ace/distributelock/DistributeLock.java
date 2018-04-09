@@ -19,7 +19,8 @@ import java.util.concurrent.locks.Lock;
  * 1。在zookeeper指定节点（locks）下创建临时顺序节点node_n   n会自增
  * 2。获取locks下所有子节点children
  * 3。对子节点按节点自增序号从小到大排序
- * 4。判断本节点是不是第一个子节点（第一个生成结点），若是，则获取锁；若不是，则监听比该节点小的所有节点的删除事件
+ * 4。判断本节点是不是第一个子节点（第一个生成结点），若是，则获取锁；
+ *    若不是，则监听比该节点小的所有节点的删除事件（客户端释放锁或断开后节点会删除）
  * 5。等到若所有比该节点小的所有节点都不在，获到锁
  * @author L
  * @date 2018/3/3
@@ -129,7 +130,7 @@ public class DistributeLock  implements Lock,Watcher {
 
         // 如果没有获得锁，则获取上一个结点,作为等待锁
         String currentNode = currentLock.substring(currentLock.lastIndexOf("/") + 1);
-        waitLock = lockNodes.get(Collections.binarySearch(lockNodes, currentNode) - 1);
+        waitLock = lockNodes.get(Collections.binarySearch(lockNodes, currentNode) - 1);// 上一个结点
         waitLocks = lockNodes.subList(0, Collections.binarySearch(lockNodes, currentNode));
         return false;
     }
