@@ -63,7 +63,7 @@ public class CacheDriver extends Configured implements Tool{
 
         // 加入到cache,也可以使用命令行（-files，-archives或-libjars）参数告诉Hadoop
         // 对于经常使用的文件或者字典，建议放到HDFS上，这样可以防止每次重复下载
-        DistributedCache.addCacheFile(new Path(args[2]).toUri(), job.getConfiguration());
+        job.addCacheFile(new Path(args[2]).toUri());
 
         //Wait for the job to complete and print if the job was successful or not
         int returnValue = job.waitForCompletion(true) ? 0:1;
