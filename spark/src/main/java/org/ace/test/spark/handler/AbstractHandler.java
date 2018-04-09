@@ -29,9 +29,16 @@ public abstract class AbstractHandler implements Handler {
 
     /**
      * 初始化各当前结点的参数
+     * 每个结点需要带有paramJson参数，
+     * 该方法一般解析paramJson，得到当前结点计算需要的参数
      */
     protected abstract void initParam();
 
+    /**
+     * 数据处理前的操作
+     * 得到上结点的输出结点
+     * 若上结点多输出，进行相应的联结操作（union, unionAll, join等）
+     */
     @Override
     public void preHandle() {
         if(parentIds == null || parentIds.isEmpty()){
@@ -49,7 +56,7 @@ public abstract class AbstractHandler implements Handler {
 
     /**
      * 数据处理结束后，保存Dataset到缓存中
-     * @param dataset
+     * @param dataset handle方法返回的结果
      */
     @Override
     public void postHandle(Dataset<Row> dataset) {

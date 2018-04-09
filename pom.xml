@@ -15,6 +15,7 @@
         <module>spark-scala</module>
         <module>spark-scala2</module>
         <module>hbase</module>
+        <module>MR</module>
     </modules>
 
 

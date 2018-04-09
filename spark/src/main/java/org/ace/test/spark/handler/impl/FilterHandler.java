@@ -19,6 +19,7 @@ public class FilterHandler extends AbstractHandler {
 
     /**
      * 初始化自己的参数
+     * 解析paramJson，得到当前结点计算需要的参数
      */
     @Override
     public void initParam() {

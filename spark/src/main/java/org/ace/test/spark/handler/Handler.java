@@ -17,7 +17,7 @@ public interface Handler extends Serializable{
 
     /**
      * 初始化
-     * @param currentNode
+     * @param currentNode 当前结点
      */
      void init(Node currentNode);
 
@@ -29,12 +29,14 @@ public interface Handler extends Serializable{
     /**
      * 数据处理
      * @param sparkSession
-     * @return
+     * @return 数据处理结果DataSet
      */
      Dataset<Row> handle(SparkSession sparkSession);
 
+
     /**
      * 数据处理后操作
+     * @param dataset  handle方法返回的结果
      */
      void postHandle(Dataset<Row> dataset);
 }
