@@ -15,10 +15,11 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 /**
+ * 在Map中使用DistributedCache
  * Created by Liangsj on 2018/4/9.
  */
 
-public class CacheMap extends Mapper<LongWritable, Text, Text, IntWritable> {
+public class CacheMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 
     private final static IntWritable one = new IntWritable(1);
     private Text word = new Text();
@@ -38,10 +39,6 @@ public class CacheMap extends Mapper<LongWritable, Text, Text, IntWritable> {
         }
     }
 
-    /**
-     * map function of Mapper parent class takes a line of text at a time
-     * splits to tokens and passes to the context as word along with value as one
-     */
     @Override
     protected void map(LongWritable key, Text value,
                        Context context)
@@ -61,6 +58,10 @@ public class CacheMap extends Mapper<LongWritable, Text, Text, IntWritable> {
 
     }
 
+    /**
+     * 读取本地文件
+     * @param filePath
+     */
     private void readFile(Path filePath) {
         try{
             BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath.toString()));

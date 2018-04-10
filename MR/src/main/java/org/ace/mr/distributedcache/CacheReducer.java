@@ -14,7 +14,7 @@ import org.apache.hadoop.mapreduce.Reducer;
  *
  * @author Raman
  */
-public class CacheReduce extends Reducer<Text, IntWritable, Text, IntWritable> {
+public class CacheReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
 
 
 }

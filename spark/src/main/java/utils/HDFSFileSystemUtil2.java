@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * Created by Liangsj on 2018/2/9.
  */
-public class HDFSFileSystemUtil {
+public class HDFSFileSystemUtil2 {
     private static final int FALIOVER_SLEEP_MILLIS=500;// 连接失败后重连时间间隔
     private static final int FALIOVER_ATTEMPTS=1;//  连接失败后重连次数
 
@@ -70,7 +70,7 @@ public class HDFSFileSystemUtil {
 
 
     public static void main(String[] args) throws Exception {
-        FileSystem fs  = HDFSFileSystemUtil.getHAFileSystem("192.168.5.150:8021","192.168.5.151:8021");
+        FileSystem fs  = HDFSFileSystemUtil2.getHAFileSystem("192.168.5.150:8021","192.168.5.151:8021");
       //  FileSystem fs = HDFSFileSystemUtil.getFileSystem("192.168.5.150",8020);
       //  fs.copyToLocalFile(new Path("/tmp/wordcount/input"), new Path("tmp"));
         System.out.println(fs.getScheme());
