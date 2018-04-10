@@ -40,7 +40,7 @@ public class CacheDriver extends Configured implements Tool{
             return -1;
         }
 
-        Job job = new Job();
+        Job job = Job.getInstance(getConf(), "CacheDriver");
         job.setJarByClass(CacheDriver.class);
         job.setJobName("Word Counter With Stop Words Removal");
 
